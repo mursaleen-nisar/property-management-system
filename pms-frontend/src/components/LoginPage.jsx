@@ -3,10 +3,21 @@ import FormInput from './formInput'
 import BlueBtn from './InputBlueBtn'
 import { useForm } from 'react-hook-form'
 import ErrorMsg from './ErrorMsg'
+import { toast } from 'react-toastify'
+import axios from 'axios'
 
 const LoginPage = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
-    const onSubmit = data => console.log(data);
+    const { register, handleSubmit, formState: { errors } } = useForm();
+    const onSubmit = async (data) => {
+        try {
+            let res = await axios.post('http://localhost:3000/api/login', data, {
+                withCredentials: true
+            });
+            toast.success(res.data.message);
+        } catch (err) {
+            toast.error(err.response.data.message);
+        }
+    }
 
   return (
     <div className='flex flex-col justify-center h-screen'>

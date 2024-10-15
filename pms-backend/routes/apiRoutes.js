@@ -1,14 +1,9 @@
 import express from "express";
 const router = express.Router();
+import { adminRegisterController, loginAuthController } from "../controllers/authController.js";
 
-router.post('/admin/register', (req, res) => {
-    const { name, email, password } = req.body;
+router.post('/admin/register', adminRegisterController);
 
-    console.log(name, email, password);
-    
-    // Save user to the database
-
-    res.json({ message: 'User registered successfully' });
-});
+router.post('/login', loginAuthController);
 
 export default router;

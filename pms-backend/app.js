@@ -1,10 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
-import mongoose from 'mongoose';
+import connectDB from './config/db.js';
 
 // Load environment variables
 dotenv.config();
+connectDB();
 
 // Import routes
 import indexRoutes from './routes/index.js';
@@ -17,7 +18,10 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-app.use(cors()); // Enable CORS for cross-origin requests
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+}));
 
 // Routes
 app.use('/', indexRoutes);

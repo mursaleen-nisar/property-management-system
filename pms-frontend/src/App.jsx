@@ -2,6 +2,8 @@ import React from 'react'
 import LoginPage from './components/LoginPage'
 import AdminRegistrationPage from './components/RegisterPage'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const App = () => {
   return (
@@ -12,6 +14,7 @@ const App = () => {
           <Route path="/admin/register" element={<AdminRegistrationPage />} />
         </Routes>
       </Router>
+      <ToastContainer />
     </div>
   )
 }

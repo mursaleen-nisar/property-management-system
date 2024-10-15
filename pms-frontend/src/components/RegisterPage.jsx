@@ -4,15 +4,16 @@ import BlueBtn from './InputBlueBtn'
 import { useForm } from 'react-hook-form'
 import ErrorMsg from './ErrorMsg'
 import axios from 'axios'
+import { toast } from 'react-toastify'
 
 const RegisterPage = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
         try {
             let res = await axios.post('http://localhost:3000/api/admin/register', data);
-            console.log(res);
+            toast.success(res.data.message);
         } catch (err) {
-            console.log(err);
+            toast.error(err.response.data.message);
         }
     }
 
