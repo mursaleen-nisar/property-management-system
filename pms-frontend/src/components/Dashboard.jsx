@@ -9,7 +9,7 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <div className="w-72 bg-zinc-800">
+      <div className="w-72 bg-zinc-800 overflow-y-scroll">
         <div className="p-6 text-2xl font-semibold text-center">
           Admin Dashboard
         </div>
@@ -62,7 +62,7 @@ const Dashboard = () => {
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 p-10">
+      <div className="flex-1 p-10 overflow-y-scroll">
         <h1 className="text-4xl font-semibold mb-8">{activeMenu}</h1>
 
         {/* Conditional Content Based on Active Menu */}

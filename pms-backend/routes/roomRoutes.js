@@ -2,6 +2,17 @@ import express from "express";
 const router = express.Router();
 import Room from "../models/Room.js";
 
+router.get('/', async (req, res) => {
+    try {
+        // Fetch all rooms from the database
+        const rooms = await Room.find({});
+        res.json(rooms);
+    } catch (err) {
+        console.error(err);
+        res.status(400).json({ message: 'Error fetching rooms' });
+    }
+});
+
 router.post('/add', async (req, res) => {
     const { roomName, roomRate, roomCategory } = req.body;
 
