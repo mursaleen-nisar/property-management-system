@@ -5,8 +5,10 @@ import { useForm } from 'react-hook-form'
 import ErrorMsg from './ErrorMsg'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const LoginPage = () => {
+    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
         try {
@@ -14,6 +16,7 @@ const LoginPage = () => {
                 withCredentials: true
             });
             toast.success(res.data.message);
+            navigate('/dashboard');
         } catch (err) {
             toast.error(err.response.data.message);
         }

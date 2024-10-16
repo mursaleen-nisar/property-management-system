@@ -1,15 +1,15 @@
 import mongoose from 'mongoose';
 
 const roomSchema = new mongoose.Schema({
-  name: {
+  roomName: {
     type: String,
     required: true,
   },
-  rate: {
+  roomRate: {
     type: Number,
     required: true,
   },
-  category: {
+  roomCategory: {
     type: String,
     required: true,
   },
