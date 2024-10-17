@@ -2,6 +2,17 @@ import express from "express";
 const router = express.Router();
 import TravelAgent from "../models/TravelAgent.js";
 
+router.get('/', async (req, res) => {
+    try {
+        // Fetch all travel agents from the database
+        const agents = await TravelAgent.find({});
+        res.json(agents);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error fetching travel agents' });
+    }
+});
+
 router.post('/add', async (req, res) => {
     const { personalName, agencyName, phoneNumber, emailAddress, physicalAddress } = req.body;
 
