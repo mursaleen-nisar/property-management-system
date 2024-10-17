@@ -5,12 +5,16 @@ import ManageRooms from './ManageRooms';
 import AddAgent from './AddAgent';
 import ManageAgents from './ManageAgents';
 import { AuthContext } from '../context/AuthContext';
+import RedBtn from './RedBtn';
 
 const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, logout } = useContext(AuthContext);
   const navigate = useNavigate();
   
+  const handleLogout = () => {
+    logout();
+  }
 
     // Redirect to login page if the user is not authenticated
     useEffect(() => {
@@ -70,7 +74,10 @@ const Dashboard = () => {
 
       {/* Main Content Area */}
       <div className="flex-1 p-10 overflow-y-scroll">
-        <h1 className="text-4xl font-semibold mb-8">{activeMenu}</h1>
+        <div className='flex justify-between'>
+            <h1 className="text-4xl font-semibold mb-8">{activeMenu}</h1>
+            <RedBtn btnText={"Logout"} onClick={handleLogout} />
+        </div>
 
         {/* Conditional Content Based on Active Menu */}
         {activeMenu === 'Add Room' && (
