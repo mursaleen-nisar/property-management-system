@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import FormInput from './formInput'
 import BlueBtn from './InputBlueBtn'
 import { useForm } from 'react-hook-form'
@@ -6,16 +6,27 @@ import ErrorMsg from './ErrorMsg'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 const LoginPage = () => {
-    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const { isAuthenticated, login } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    // Redirect to dashboard page if the user is authenticated
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigate('/dashboard');
+        }
+    }, [isAuthenticated, navigate]);
+
     const onSubmit = async (data) => {
         try {
             let res = await axios.post('http://localhost:3000/api/login', data, {
                 withCredentials: true
             });
             toast.success(res.data.message);
+            login(); // Sets authentication status to true
             navigate('/dashboard');
         } catch (err) {
             toast.error(err.response.data.message);

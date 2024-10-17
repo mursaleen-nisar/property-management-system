@@ -1,12 +1,23 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AddRoom from './AddRoom';
 import ManageRooms from './ManageRooms';
 import AddAgent from './AddAgent';
 import ManageAgents from './ManageAgents';
+import { AuthContext } from '../context/AuthContext';
 
 const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
+  const { isAuthenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+  
+
+    // Redirect to login page if the user is not authenticated
+    useEffect(() => {
+        if (!isAuthenticated) {
+          navigate('/');
+        }
+    }, [isAuthenticated, navigate]);
 
   return (
     <div className="flex h-screen">
