@@ -12,6 +12,7 @@ connectDB();
 import indexRoutes from './routes/index.js';
 import apiRoutes from './routes/apiRoutes.js';
 import roomRoutes from './routes/roomRoutes.js';
+import agentRoutes from './routes/agentRoutes.js';
 // import authRoutes from './routes/authRoutes.js';
 
 // Initialize express app
@@ -29,6 +30,7 @@ app.use(cors({
 app.use('/', indexRoutes);
 app.use('/api', apiRoutes);
 app.use('/rooms', roomRoutes);
+app.use('/agents', agentRoutes);
 // app.use('/api/auth', authRoutes);
 
 // Start the server

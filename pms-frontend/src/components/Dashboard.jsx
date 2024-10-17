@@ -2,6 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import AddRoom from './AddRoom';
 import ManageRooms from './ManageRooms';
+import AddAgent from './AddAgent';
+import ManageAgents from './ManageAgents';
 
 const Dashboard = () => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
@@ -40,12 +42,6 @@ const Dashboard = () => {
               Manage Travel Agents
             </li>
             <li
-              className={`p-4 cursor-pointer ${activeMenu === 'Book Room' ? 'bg-zinc-900' : ''}`}
-              onClick={() => setActiveMenu('Book Room')}
-            >
-              Book Room
-            </li>
-            <li
               className={`p-4 cursor-pointer ${activeMenu === 'Booked Rooms' ? 'bg-zinc-900' : ''}`}
               onClick={() => setActiveMenu('Booked Rooms')}
             >
@@ -78,20 +74,12 @@ const Dashboard = () => {
         )}
         {activeMenu === 'Add Travel Agent' && (
           <div>
-            <p className="text-lg">This is the Add Travel Agent page.</p>
-            {/* Add travel agent form goes here */}
+            <AddAgent />
           </div>
         )}
         {activeMenu === 'Manage Travel Agents' && (
           <div>
-            <p className="text-lg">This is the Manage Travel Agents page.</p>
-            {/* Manage travel agents content goes here */}
-          </div>
-        )}
-        {activeMenu === 'Book Room' && (
-          <div>
-            <p className="text-lg">This is the Book Room page.</p>
-            {/* Book room form goes here */}
+            <ManageAgents />
           </div>
         )}
         {activeMenu === 'Booked Rooms' && (
