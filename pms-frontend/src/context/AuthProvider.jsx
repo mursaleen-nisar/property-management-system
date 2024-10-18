@@ -11,10 +11,26 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    if(!token) {
+    if(token) {
+      (async () => {
+        try {
+          let res = await axios.get('http://localhost:3000/api/user', {
+            withCredentials: true
+          });
+          setIsAuthenticated(true); // Set authentication state to logged in
+          setRole(res.data.role); // Set user role
+        } catch (err) {
+          setIsAuthenticated(false); // If token is invalid, set authentication state to logged out
+        } finally {
+          setLoading(false);
+        }
+      }) ();
+    } else {
       setLoading(false);
+      setIsAuthenticated(false);
+      setRole(null);
     }
-  }, [])
+  }, []);
 
   // Function to set authentication state to logged in
   const login = async () => {
