@@ -40,3 +40,24 @@ export const loginAuthController = async (req, res) => {
 
     res.json({ message: 'Logged in successfully' });
 }
+
+export const userRegisterController = async (req, res) => {
+    const { name, email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (user) return res.status(400).json({ message: 'User already exists' });
+
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) console.error("Error generating salt");
+        bcrypt.hash(password, salt, async (err, hash) => {
+            if (err) console.error("Error hashing password");
+            await User.create({
+                name,
+                email,
+                password: hash
+            });
+        });
+    });
+
+    res.json({ message: 'Registered successfully' });
+}

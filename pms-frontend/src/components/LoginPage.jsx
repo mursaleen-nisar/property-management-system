@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useEffect, useContext } from 'react'
 import FormInput from './formInput'
 import BlueBtn from './InputBlueBtn'
 import { useForm } from 'react-hook-form'
 import ErrorMsg from './ErrorMsg'
 import { toast } from 'react-toastify'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 
 const LoginPage = () => {
@@ -26,7 +26,7 @@ const LoginPage = () => {
                 withCredentials: true
             });
             toast.success(res.data.message);
-            login(); // Sets authentication status to true
+            login();
             navigate('/dashboard');
         } catch (err) {
             toast.error(err.response.data.message);
@@ -58,6 +58,7 @@ const LoginPage = () => {
             msg={errors.password?.message}
         />
         <BlueBtn btnText={"Login"} />
+        <p className='text-zinc-400'>Don't have an account? <Link to="/register" className='underline'>Register here</Link></p>
       </form>
     </div>
   )

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import LoginPage from './components/LoginPage'
 import AdminRegistrationPage from './components/RegisterPage'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 import Dashboard from './components/Dashboard';
-import { AuthProvider } from './context/AuthContext';
+import { AuthProvider } from './context/AuthProvider';
+import UserRegister from './components/UserRegister';
 
 const App = () => {
   
@@ -17,9 +18,10 @@ const App = () => {
             <Route path="/" element={<LoginPage />} />
             <Route path="/admin/register" element={<AdminRegistrationPage />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/register" element={<UserRegister />} />
           </Routes>
         </Router>
-        <ToastContainer />
+        <ToastContainer autoClose={3000} />
       </AuthProvider>
     </div>
   )
