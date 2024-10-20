@@ -6,7 +6,8 @@ const bookedRoomsSchema = new mongoose.Schema({
         required: true
     },
     roomName: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Room',
         required: true
     },
     guestName: {
@@ -22,7 +23,8 @@ const bookedRoomsSchema = new mongoose.Schema({
         required: true
     },
     travelAgent: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'TravelAgent',
         required: true
     },
     status: {

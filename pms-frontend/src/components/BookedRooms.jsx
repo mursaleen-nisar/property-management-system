@@ -71,7 +71,7 @@ const BookedRooms = () => {
                 key={booking._id}
                 className="bg-zinc-950 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 p-4"
               >
-                <h3 className="text-xl font-semibold mb-2">{booking.roomName} Room</h3>
+                <h3 className="text-xl font-semibold mb-2">{booking.roomName.roomName} Room</h3>
                 <p className="text-gray-500 mb-1">
                   <strong>Room Category:</strong> {booking.roomCategory}
                 </p>
@@ -85,7 +85,7 @@ const BookedRooms = () => {
                   <strong>Check-out Date:</strong> {format(checkoutDate, 'dd-MM-yyyy')}
                 </p>
                 <p className="text-gray-500 mb-1">
-                  <strong>Assigned Agent:</strong> {booking.travelAgent}
+                  <strong>Assigned Agent:</strong> {booking.travelAgent.personalName}
                 </p>
                 <p className="text-gray-500 mb-4">
                   <strong>Status:</strong> {booking.status}

@@ -7,6 +7,7 @@ import TravelAgent from "../models/TravelAgent.js";
 import User from "../models/User.js";
 import { sendEmailToAgent, sendCancellationEmail } from "../utils/emailHelper.js";
 import { verifyToken } from "../middlewares/verifyToken.js";
+import { isBefore, isSameDay } from 'date-fns';
 
 router.get('/', async (req, res) => {
     try {
@@ -16,6 +17,16 @@ router.get('/', async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(400).json({ message: 'Error fetching rooms' });
+    }
+});
+
+router.get('/all-booked-rooms', async (req, res) => {
+    try {
+        // Fetching all bookedrooms with status='booked'
+        const bookedRooms = await BookedRooms.find({ status: 'booked' }).populate('travelAgent roomName');
+        res.json(bookedRooms);
+    } catch (err) {
+        res.json({ message: 'Error fetching bookings' });
     }
 });
 
@@ -39,46 +50,52 @@ router.post('/add', async (req, res) => {
 });
 
 router.post('/booking', verifyToken, async (req, res) => {
-    const { roomCategory, roomName, guestName, checkinDate, checkoutDate, travelAgent } = req.body;
+    const { roomCategory, roomName, guestName, checkinDate, checkoutDate, travelAgentName } = req.body;
     const presentDate = new Date();
     const checkInDate = new Date(checkinDate);
     const checkOutDate = new Date(checkoutDate);
+    const travelAgent = await TravelAgent.findOne({ personalName: travelAgentName });
+    const roomId = await Room.findOne({ roomName });
 
     let userid = req.userid;
 
     // Input validation
-    if (!roomCategory || !roomName || !guestName || !checkinDate || !checkoutDate || !travelAgent) {
+    if (!roomCategory || !roomName || !guestName || !checkinDate || !checkoutDate || !travelAgentName) {
         return res.status(400).json({ message: 'All fields are required' });
     }
 
-    if (checkInDate < presentDate) {
+    if (isBefore(checkInDate, presentDate) && !isSameDay(checkInDate, presentDate)) {
         return res.status(400).json({ message: 'Check-in date must be in the future' });
     }
 
-    if(checkOutDate < checkInDate) {
+    if(isBefore(checkOutDate, checkInDate)) {
         return res.status(400).json({ message: 'Check-out date must be after check-in date' });
     }
 
     try {
         const bookedRoom = await BookedRooms.create({
             roomCategory,
-            roomName,
+            roomName: roomId._id,
             guestName,
             checkinDate,
             checkoutDate,
-            travelAgent,
+            travelAgent: travelAgent._id,
             bookedBy: userid
         });
+        // Populated travelAgent field
+        const populatedBookedRoom = await bookedRoom
+            .populate('travelAgent roomName');
+        console.log(populatedBookedRoom)
 
     // Now fetch agent's email through name and send an email to the agent
-    const agent = await TravelAgent.findOne({ personalName: travelAgent });
     const user = await User.findById(bookedRoom.bookedBy).select('name');
 
     // Send email to agent
-    sendEmailToAgent(agent.emailAddress, bookedRoom, user.name);
+    sendEmailToAgent(travelAgent.emailAddress, populatedBookedRoom, user.name);
 
         return res.json({ message: 'Room booked successfully' });
     } catch (err) {
+        console.error('Error while booking room:', err);
         return res.status(400).json({ message: "Error while booking room." });
     }
 
@@ -90,7 +107,7 @@ router.get('/bookedrooms', verifyToken, async (req, res) => {
       const userId = req.userid;
   
       // Fetch all booked rooms where bookedBy equals the logged-in user's ID
-      const bookedRooms = await BookedRooms.find({ bookedBy: userId });
+      const bookedRooms = await BookedRooms.find({ bookedBy: userId }).populate('travelAgent roomName');
   
       // Return the booked rooms to the client
       res.json(bookedRooms);
@@ -105,8 +122,8 @@ router.put('/bookedrooms/:bookingId/cancel', async (req, res) => {
         const bookingId = req.params.bookingId;
         const { cancellationReason } = req.body;
     
-        const booking = await BookedRooms.findById(bookingId);
-        const { emailAddress } = await TravelAgent.findOne({ personalName: booking.travelAgent }).select('emailAddress');
+        const booking = await BookedRooms.findById(bookingId).populate('travelAgent roomName');
+        const { emailAddress } = await TravelAgent.findOne({ _id: booking.travelAgent }).select('emailAddress');
     
         if (!booking) {
           return res.status(404).json({ message: 'Booking not found' });

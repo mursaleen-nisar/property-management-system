@@ -151,9 +151,9 @@ const BookRoom = () => {
           {/* Select Agent */}
           <div className="mb-4">
           <select
-                id="travelAgent"
-                className={`block px-2.5 pb-2.5 pt-4 w-full bg-transparent rounded-lg border border-zinc-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer ${errors.travelAgent ? 'border-red-500' : ''}`}
-                {...register('travelAgent', { required: 'Travel Agent is required' })}
+                id="travelAgentName"
+                className={`block px-2.5 pb-2.5 pt-4 w-full bg-transparent rounded-lg border border-zinc-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer ${errors.travelAgentName ? 'border-red-500' : ''}`}
+                {...register('travelAgentName', { required: 'Travel Agent is required' })}
             >
                 <option value="">Select Agent</option>
                 {agents.map((agent, idx) => {
@@ -164,8 +164,8 @@ const BookRoom = () => {
             </select>
 
             <ErrorMsg
-                error={errors.travelAgent}
-                msg={errors.travelAgent?.message}
+                error={errors.travelAgentName}
+                msg={errors.travelAgentName?.message}
             />
           </div>
 
