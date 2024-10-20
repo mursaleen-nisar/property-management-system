@@ -5,6 +5,7 @@ import ManageRooms from './ManageRooms';
 import AddAgent from './AddAgent';
 import ManageAgents from './ManageAgents';
 import RedBtn from './RedBtn';
+import Reports from './Reports';
 
 const AdminDashboard = () => {
   const [activeMenu, setActiveMenu] = useState('Dashboard');
@@ -48,12 +49,6 @@ const AdminDashboard = () => {
               Manage Travel Agents
             </li>
             <li
-              className={`p-4 cursor-pointer ${activeMenu === 'Booked Rooms' ? 'bg-zinc-900' : ''}`}
-              onClick={() => setActiveMenu('Booked Rooms')}
-            >
-              Booked Rooms
-            </li>
-            <li
               className={`p-4 cursor-pointer ${activeMenu === 'Reports' ? 'bg-zinc-900' : ''}`}
               onClick={() => setActiveMenu('Reports')}
             >
@@ -91,16 +86,9 @@ const AdminDashboard = () => {
             <ManageAgents />
           </div>
         )}
-        {activeMenu === 'Booked Rooms' && (
-          <div>
-            <p className="text-lg">This is the Booked Rooms page.</p>
-            {/* Booked rooms management content goes here */}
-          </div>
-        )}
         {activeMenu === 'Reports' && (
           <div>
-            <p className="text-lg">This is the Reports page.</p>
-            {/* Reports and stats go here */}
+            <Reports />
           </div>
         )}
       </div>

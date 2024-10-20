@@ -30,6 +30,9 @@ const bookedRoomsSchema = new mongoose.Schema({
         enum: ['booked', 'cancelled'],
         default: 'booked',
     },
+    cancellationReason: {
+        type: String
+    },
     bookedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

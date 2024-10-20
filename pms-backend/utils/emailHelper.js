@@ -40,3 +40,36 @@ Thank you!`,
         console.error('Error sending email:', error);
     }
 };
+
+// Helper function to send cancellation email
+export const sendCancellationEmail = async (agentEmail, bookingDetails, cancellationReason) => {
+  const mailOptions = {
+    from: process.env.GMAIL_USER,
+    to: agentEmail,
+    subject: `Booking Cancelled for Room: ${bookingDetails.roomName}`,
+    html: `
+      <h2>Booking Cancellation</h2>
+      <p>Dear ${bookingDetails.travelAgent},</p>
+      <p>The booking for the room has been cancelled.</p>
+      <h3>Booking Details:</h3>
+      <ul>
+        <li><strong>Room Category:</strong> ${bookingDetails.roomCategory}</li>
+        <li><strong>Room Name:</strong> ${bookingDetails.roomName}</li>
+        <li><strong>Guest Name:</strong> ${bookingDetails.guestName}</li>
+        <li><strong>Check-in Date:</strong> ${bookingDetails.checkinDate}</li>
+        <li><strong>Check-out Date:</strong> ${bookingDetails.checkoutDate}</li>
+      </ul>
+      <h3>Cancellation Reason:</h3>
+      <p>${cancellationReason}</p>
+      <p>Best regards,<br/>Hotel Management Team</p>
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    console.log('Cancellation email sent successfully to the travel agent.');
+  } catch (error) {
+    console.error('Error sending email:', error);
+    throw new Error('Failed to send cancellation email.');
+  }
+};

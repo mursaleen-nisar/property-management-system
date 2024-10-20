@@ -5,7 +5,8 @@ import BookedRooms from "../models/BookedRooms.js";
 import jwt from 'jsonwebtoken';
 import TravelAgent from "../models/TravelAgent.js";
 import User from "../models/User.js";
-import { sendEmailToAgent } from "../utils/emailHelper.js";
+import { sendEmailToAgent, sendCancellationEmail } from "../utils/emailHelper.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 router.get('/', async (req, res) => {
     try {
@@ -37,13 +38,13 @@ router.post('/add', async (req, res) => {
     }
 });
 
-router.post('/booking', async (req, res) => {
+router.post('/booking', verifyToken, async (req, res) => {
     const { roomCategory, roomName, guestName, checkinDate, checkoutDate, travelAgent } = req.body;
     const presentDate = new Date();
     const checkInDate = new Date(checkinDate);
     const checkOutDate = new Date(checkoutDate);
 
-    let decodedToken = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
+    let userid = req.userid;
 
     // Input validation
     if (!roomCategory || !roomName || !guestName || !checkinDate || !checkoutDate || !travelAgent) {
@@ -66,7 +67,7 @@ router.post('/booking', async (req, res) => {
             checkinDate,
             checkoutDate,
             travelAgent,
-            bookedBy: decodedToken.id
+            bookedBy: userid
         });
 
     // Now fetch agent's email through name and send an email to the agent
@@ -82,6 +83,48 @@ router.post('/booking', async (req, res) => {
     }
 
     
+});
+
+router.get('/bookedrooms', verifyToken, async (req, res) => {
+    try {
+      const userId = req.userid;
+  
+      // Fetch all booked rooms where bookedBy equals the logged-in user's ID
+      const bookedRooms = await BookedRooms.find({ bookedBy: userId });
+  
+      // Return the booked rooms to the client
+      res.json(bookedRooms);
+    } catch (error) {
+      console.error('Error fetching booked rooms:', error);
+      res.status(500).json({ message: 'Failed to fetch booked rooms.' });
+    }
+});
+
+router.put('/bookedrooms/:bookingId/cancel', async (req, res) => {
+    try {
+        const bookingId = req.params.bookingId;
+        const { cancellationReason } = req.body;
+    
+        const booking = await BookedRooms.findById(bookingId);
+        const { emailAddress } = await TravelAgent.findOne({ personalName: booking.travelAgent }).select('emailAddress');
+    
+        if (!booking) {
+          return res.status(404).json({ message: 'Booking not found' });
+        }
+    
+        // Update booking status to 'cancelled' and save the reason
+        booking.status = 'cancelled';
+        booking.cancellationReason = cancellationReason; // Add cancellation reason to the booking
+        await booking.save();
+    
+        // Send an email notification to the travel agent
+        sendCancellationEmail(emailAddress, booking, cancellationReason);
+    
+        res.status(200).json({ message: 'Booking cancelled successfully.' });
+    } catch(err) {
+        console.error('Error canceling booking:', err);
+        res.status(500).json({ message: 'Failed to cancel booking.' });
+    }
 });
 
 export default router;

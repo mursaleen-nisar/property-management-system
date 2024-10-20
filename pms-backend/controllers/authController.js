@@ -5,6 +5,11 @@ import jwt from "jsonwebtoken";
 export const adminRegisterController = async (req, res) => {
     const { name, email, password } = req.body;
 
+    const admins = await User.find({ role: 'admin' });
+    if(admins.length > 0) {
+        return res.status(403).json({ message: "You are not allowed to register"});
+    }
+
     const user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: 'User already exists' });
 
