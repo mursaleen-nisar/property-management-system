@@ -6,7 +6,7 @@ const ManageAgents = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await axios.get('http://localhost:3000/agents');
+      const res = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/agents`);
       setAgents(res.data);
     })();
   }, []);

@@ -6,7 +6,7 @@ const ManageRooms = () => {
 
     useEffect(() => {
       (async () => {
-        const res = await axios.get('http://localhost:3000/rooms');
+        const res = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/rooms`);
         setRooms(res.data);
       }) ();
     }, [])

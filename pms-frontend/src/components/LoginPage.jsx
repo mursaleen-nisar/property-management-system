@@ -22,7 +22,7 @@ const LoginPage = () => {
 
     const onSubmit = async (data) => {
         try {
-            let res = await axios.post('http://localhost:3000/api/login', data, {
+            let res = await axios.post(`${import.meta.env.BACKEND_BASE_URL}/api/login`, data, {
                 withCredentials: true
             });
             toast.success(res.data.message);

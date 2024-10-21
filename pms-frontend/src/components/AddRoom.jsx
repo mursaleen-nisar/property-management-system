@@ -11,7 +11,7 @@ const AddRoom = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post('http://localhost:3000/rooms/add', data);
+      const response = await axios.post(`${import.meta.env.BACKEND_BASE_URL}/rooms/add`, data);
 
       // Show success toast on successful response
       toast.success(response.data.message);

@@ -16,8 +16,8 @@ const ReportsPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        const bookingsRes = await axios.get('http://localhost:3000/rooms/all-booked-rooms');
-        const agentsRes = await axios.get('http://localhost:3000/agents');
+        const bookingsRes = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/rooms/all-booked-rooms`);
+        const agentsRes = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/agents`);
         setBookings(bookingsRes.data);
         setAgents(agentsRes.data);
         setFilteredBookings(bookingsRes.data);

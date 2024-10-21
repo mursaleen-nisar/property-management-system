@@ -11,7 +11,7 @@ const AddTravelAgent = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await axios.post('http://localhost:3000/agents/add', data);
+      const res = await axios.post(`${import.meta.env.BACKEND_BASE_URL}/agents/add`, data);
 
       // Show success toast on successful response
       toast.success(res.data.message);

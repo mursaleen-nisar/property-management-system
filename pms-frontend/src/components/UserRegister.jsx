@@ -10,7 +10,7 @@ const UserRegister = () => {
     const { register, handleSubmit, watch, formState: { errors }, reset } = useForm();
     const onSubmit = async (data) => {
         try {
-            let res = await axios.post('http://localhost:3000/api/register', data);
+            let res = await axios.post(`${import.meta.env.BACKEND_BASE_URL}/api/register`, data);
             toast.success(res.data.message);
             reset(); // Clear form fields after successful submission
         } catch (err) {

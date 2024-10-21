@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     if(token) {
       (async () => {
         try {
-          let res = await axios.get('http://localhost:3000/api/user', {
+          let res = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/api/user`, {
             withCredentials: true
           });
           setIsAuthenticated(true); // Set authentication state to logged in
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
   // Function to set authentication state to logged in
   const login = async () => {
     try {
-      let res = await axios.get('http://localhost:3000/api/user', {
+      let res = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/api/user`, {
         withCredentials: true
       });
       setIsAuthenticated(true); // Set authentication state to logged in
