@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import FormInput from './formInput';
+import FormInput from './FormInput';
 import ErrorMsg from './ErrorMsg';
 import BlueBtn from './InputBlueBtn';
 import axios from 'axios';

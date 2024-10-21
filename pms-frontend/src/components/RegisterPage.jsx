@@ -1,5 +1,5 @@
 import React from 'react'
-import FormInput from './formInput'
+import FormInput from './FormInput'
 import BlueBtn from './InputBlueBtn'
 import { useForm } from 'react-hook-form'
 import ErrorMsg from './ErrorMsg'
