@@ -85,7 +85,6 @@ router.post('/booking', verifyToken, async (req, res) => {
         // Populated travelAgent field
         const populatedBookedRoom = await bookedRoom
             .populate('travelAgent roomName');
-        console.log(populatedBookedRoom)
 
     // Now fetch agent's email through name and send an email to the agent
     const user = await User.findById(bookedRoom.bookedBy).select('name');

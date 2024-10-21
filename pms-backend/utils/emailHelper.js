@@ -69,7 +69,7 @@ export const sendCancellationEmail = async (agentEmail, bookingDetails, cancella
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('Cancellation email sent successfully to the travel agent.');
+    console.log(`Cancellation email sent successfully to ${bookingDetails.travelAgent.personalName}`);
   } catch (error) {
     console.error('Error sending email:', error);
     throw new Error('Failed to send cancellation email.');

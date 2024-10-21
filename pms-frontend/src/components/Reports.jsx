@@ -151,7 +151,6 @@ const ReportsPage = () => {
                 const agentBookings = bookings.filter(
                 (booking) => booking.travelAgent.personalName === agent.personalName
                 );
-                console.log(agentBookings);
                 
                 const totalBusiness = agentBookings.reduce(
                 (sum, booking) => sum + booking.roomName.roomRate, 0
