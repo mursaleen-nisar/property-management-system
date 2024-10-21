@@ -23,6 +23,9 @@ app.use(cors({
     credentials: true,
 }));
 
+// Handle perfight requests
+app.options('*', cors());
+
 // Routes
 app.use('/', indexRoutes);
 app.use('/api', apiRoutes);
