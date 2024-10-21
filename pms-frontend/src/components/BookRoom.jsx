@@ -13,8 +13,8 @@ const BookRoom = () => {
 
   useEffect(() => {
     (async () => {
-        const res = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/rooms`);
-        const res2 = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/agents`);
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms`);
+        const res2 = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/agents`);
         setRooms(res.data);
         setAgents(res2.data);
     }) ();
@@ -27,7 +27,7 @@ const BookRoom = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post(`${import.meta.env.BACKEND_BASE_URL}/rooms/booking`, data, { withCredentials: true });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/booking`, data, { withCredentials: true });
 
       // Show success toast on successful response
       toast.success(response.data.message);

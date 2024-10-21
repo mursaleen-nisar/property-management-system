@@ -10,7 +10,7 @@ const RegisterPage = () => {
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = async (data) => {
         try {
-            let res = await axios.post(`${import.meta.env.BACKEND_BASE_URL}/api/admin/register`, data);
+            let res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/admin/register`, data);
             toast.success(res.data.message);
         } catch (err) {
             toast.error(err.response.data.message);

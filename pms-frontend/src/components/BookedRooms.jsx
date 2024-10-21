@@ -14,7 +14,7 @@ const BookedRooms = () => {
   useEffect(() => {
     (async () => {
       try {
-        const res = await axios.get(`${import.meta.env.BACKEND_BASE_URL}/rooms/bookedrooms`, { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/bookedrooms`, { withCredentials: true });
         setBookings(res.data);
       } catch (error) {
         console.error('Error fetching bookings:', error);
@@ -37,7 +37,7 @@ const BookedRooms = () => {
   // Cancel Booking handler
   const handleCancelBooking = async (bookingId, cancellationReason) => {
     try {
-      let res = await axios.put(`${import.meta.env.BACKEND_BASE_URL}/rooms/bookedrooms/${bookingId}/cancel`, { cancellationReason, status: 'cancelled' });
+      let res = await axios.put(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/bookedrooms/${bookingId}/cancel`, { cancellationReason, status: 'cancelled' });
       toast.success(res.data.message);
 
       // Update the status in the local state
