@@ -41,7 +41,14 @@ export const loginAuthController = async (req, res) => {
 
     // if password matches, create and return JWT token
     let token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-    res.cookie('token', token);
+
+    const cookieOptions = {
+        httpOnly: true, // Makes the cookie inaccessible via JavaScript (for security)
+        secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
+        sameSite: 'None', // Allows cross-origin cookie sharing
+    };
+
+    res.cookie('token', token, cookieOptions);
 
     res.json({ message: 'Logged in successfully' });
 }
