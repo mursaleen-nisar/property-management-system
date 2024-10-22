@@ -46,6 +46,7 @@ export const loginAuthController = async (req, res) => {
         httpOnly: true, // Makes the cookie inaccessible via JavaScript (for security)
         secure: process.env.NODE_ENV === 'production', // Ensure cookies are only sent over HTTPS in production
         sameSite: 'None', // Allows cross-origin cookie sharing
+        maxAge: 7 * 24 * 60 * 60 * 1000 // 1 week (in milliseconds)
     };
 
     res.cookie('token', token, cookieOptions);
