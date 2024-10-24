@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 import { AuthContext } from './AuthContext';
 
@@ -8,14 +7,14 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = localStorage.getItem('token');
     if(token) {
       (async () => {
         try {
           let res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user`, {
-            withCredentials: true
+            headers: { Authorization: `Bearer ${token}` }
           });
           setIsAuthenticated(true); // Set authentication state to logged in
           setRole(res.data.role); // Set user role
@@ -34,9 +33,10 @@ export const AuthProvider = ({ children }) => {
 
   // Function to set authentication state to logged in
   const login = async () => {
+    const token = localStorage.getItem('token');
     try {
       let res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/user`, {
-        withCredentials: true
+        headers: { Authorization: `Bearer ${token}` }
       });
       setIsAuthenticated(true); // Set authentication state to logged in
       setRole(res.data.role); // Set user role
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
 
   // Function to log out the user (remove token)
   const logout = () => {
-    Cookies.remove('token'); // Remove the token cookie
+    localStorage.removeItem('token'); // Remove the token cookie
     setIsAuthenticated(false);
     setRole(null);
   };

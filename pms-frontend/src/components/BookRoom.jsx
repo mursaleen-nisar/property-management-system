@@ -26,8 +26,13 @@ const BookRoom = () => {
 
 
   const onSubmit = async (data) => {
+    let token = localStorage.getItem('token');
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/booking`, data, { withCredentials: true });
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/booking`, data, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
 
       // Show success toast on successful response
       toast.success(response.data.message);

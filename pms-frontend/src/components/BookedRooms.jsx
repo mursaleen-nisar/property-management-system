@@ -13,8 +13,13 @@ const BookedRooms = () => {
   // Fetch the user's bookings
   useEffect(() => {
     (async () => {
+      let token = localStorage.getItem('token');
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/bookedrooms`, { withCredentials: true });
+        const res = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/rooms/bookedrooms`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
         setBookings(res.data);
       } catch (error) {
         console.error('Error fetching bookings:', error);

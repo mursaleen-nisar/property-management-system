@@ -22,9 +22,8 @@ const LoginPage = () => {
 
     const onSubmit = async (data) => {
         try {
-            let res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/login`, data, {
-                withCredentials: true
-            });
+            let res = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/api/login`, data);
+            localStorage.setItem('token', res.data.token);
             toast.success(res.data.message);
             login();
             navigate('/dashboard');
